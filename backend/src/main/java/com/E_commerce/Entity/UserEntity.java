@@ -1,14 +1,18 @@
 package com.E_commerce.Entity;
 
+import java.util.List;
+
 import com.E_commerce.Enum.StatusUser;
 import com.E_commerce.Enum.UserRole;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,4 +32,6 @@ public class UserEntity extends BaseEntity{
     private UserRole role;
     @Enumerated(EnumType.STRING)
     private StatusUser status;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserAddress> address;
 }

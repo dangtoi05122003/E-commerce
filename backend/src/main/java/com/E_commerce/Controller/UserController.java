@@ -18,13 +18,15 @@ import com.E_commerce.Service.UserService;
 import com.E_commerce.dto.Request.UserRequest;
 import com.E_commerce.dto.Response.UserResponse;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
     @PostMapping("/register")
-    public UserResponse register(@RequestBody UserRequest request) {
+    public UserResponse register(@Valid @RequestBody UserRequest request) {
         return userService.createUser(request);
     }
     @PostMapping("/verify-otp")
@@ -44,7 +46,7 @@ public class UserController {
         return userService.getStatusUser(status);
     }
     @PutMapping("/update/{userId}")
-    public UserResponse updateUsername(@PathVariable Long userId, @RequestBody UserRequest request) {
+    public UserResponse updateUsername(@PathVariable Long userId, @Valid @RequestBody UserRequest request) {
         return userService.updateUsername(userId, request);
     }
     @PutMapping("/delete/{userId}")
