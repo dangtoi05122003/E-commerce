@@ -24,7 +24,12 @@ public enum ErrorCode {
     PRODUCT_NOT_FOUND(4001, "Sản phẩm không tồn tại"),
     PRODUCT_ALREADY_DELETED(4002,"Sản phẩm đã bị xoá"),
     PRODUCT_MEDIA_NOT_FOUND(4003, "Media sản phẩm không tồn tại"),
-    MEDIA_NOT_ACTIVE(4004, "Media không ở trạng thái hoạt động");
+    MEDIA_NOT_ACTIVE(4004, "Media không ở trạng thái hoạt động"),
+    VARIANT_NOT_FOUND(4005, "Sản phẩm không tìm thấy"),
+    VARIANT_INACTIVE(4006, "Sản phẩm đã bị vô hiệu hóa"),
+    INVENTORY_NOT_FOUND(4007, "Không tìm thấy tồn kho"),
+    INSUFFICIENT_STOCK(4008, "Không đủ số lượng trong kho"),
+    INVENTORY_ALREADY_EXISTS(4009, "Kho hàng của sản phẩm này đã tồn tại");
     private int code;
     private String message;
 }
