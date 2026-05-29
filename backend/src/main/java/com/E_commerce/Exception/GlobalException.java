@@ -17,7 +17,7 @@ public class GlobalException {
     }
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<ApiResponse> handleValidationExceptions(MethodArgumentNotValidException exception) {
-        ApiResponse apiResponse = new ApiResponse(2000, exception.getDetailMessageCode());
+        ApiResponse apiResponse = new ApiResponse(2000, exception.getBindingResult().getFieldError().getDefaultMessage());
         return ResponseEntity.badRequest().body(apiResponse);
     }
 }

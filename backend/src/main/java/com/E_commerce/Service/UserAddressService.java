@@ -15,6 +15,7 @@ import com.E_commerce.Repository.UserAddressRepository;
 import com.E_commerce.Repository.UserRepository;
 import com.E_commerce.dto.Request.UserAddressRequest;
 import com.E_commerce.dto.Response.UserAddressResponse;
+import static com.E_commerce.utils.SecurityUtil.getCurrentUserId;
 
 import jakarta.transaction.Transactional;
 
@@ -25,7 +26,8 @@ public class UserAddressService {
     @Autowired
     private UserRepository userRepository;
     @Transactional
-    public UserAddressResponse createUserAddress(Long userId, UserAddressRequest request) {
+    public UserAddressResponse createUserAddress(UserAddressRequest request) {
+        Long userId = getCurrentUserId();
         UserEntity user = userRepository.findById(userId).orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND));
         UserAddress userAddress = new UserAddress();
         userAddress.setUser(user);
@@ -42,7 +44,11 @@ public class UserAddressService {
         return UserAddressMapper.toResponse(userAddressRepository.save(userAddress));
     }
     public UserAddressResponse updateUserAddress(Long userAddressId, UserAddressRequest request) {
+        Long userId = getCurrentUserId();
         UserAddress userAddress = userAddressRepository.findById(userAddressId).orElseThrow(()-> new AppException(ErrorCode.ADDRESS_NOT_FOUND));
+        if (!userAddress.getUser().getId().equals(userId)) {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
         if (Boolean.TRUE.equals(userAddress.getIsDeleted())) {
             throw new AppException(ErrorCode.ADDRESS_ALREADY_DELETED);
         }
@@ -54,21 +60,30 @@ public class UserAddressService {
         return UserAddressMapper.toResponse(userAddressRepository.save(userAddress));
     }
     public UserAddressResponse deleteUserAddress(Long userAddressId) {
+        Long userId = getCurrentUserId();
         UserAddress userAddress = userAddressRepository.findById(userAddressId).orElseThrow(()-> new AppException(ErrorCode.ADDRESS_NOT_FOUND));
+        if (!userAddress.getUser().getId().equals(userId)) {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
         if (Boolean.TRUE.equals(userAddress.getIsDeleted())) {
             throw new AppException(ErrorCode.ADDRESS_ALREADY_DELETED);
         }
         userAddress.setIsDeleted(true);
         return UserAddressMapper.toResponse(userAddressRepository.save(userAddress)); 
     }
-    public List<UserAddressResponse> getAllAddressesByUserId(Long userId) {
+    public List<UserAddressResponse> getAllAddressesByUserId() {
+        Long userId = getCurrentUserId();
         userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         return userAddressRepository.findAllByUserIdAndIsDeletedFalse(userId).stream()
             .map(UserAddressMapper::toResponse)
             .collect(Collectors.toList());
     }
     public UserAddressResponse getAddressById(Long userAddressId) {
+        Long userId = getCurrentUserId();
         UserAddress userAddress = userAddressRepository.findById(userAddressId).orElseThrow(() -> new AppException(ErrorCode.ADDRESS_NOT_FOUND));
+        if (!userAddress.getUser().getId().equals(userId)) {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
         if (Boolean.TRUE.equals(userAddress.getIsDeleted())) {
             throw new AppException(ErrorCode.ADDRESS_ALREADY_DELETED);
         }

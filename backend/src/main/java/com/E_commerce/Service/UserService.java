@@ -18,8 +18,10 @@ import com.E_commerce.Exception.AppException;
 import com.E_commerce.Exception.ErrorCode;
 import com.E_commerce.Mapper.UserMapper;
 import com.E_commerce.Repository.UserRepository;
-import com.E_commerce.dto.Request.UserRequest;
+import com.E_commerce.dto.Request.user.UpdateUserNameRequest;
+import com.E_commerce.dto.Request.user.UserRequest;
 import com.E_commerce.dto.Response.UserResponse;
+import static com.E_commerce.utils.SecurityUtil.getCurrentUserId;
 
 import jakarta.transaction.Transactional;
 
@@ -31,6 +33,8 @@ public class UserService {
     private EmailService emailService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CartService cartService;
     @Autowired
     private StringRedisTemplate redisTemplate;
     private final SecureRandom random = new SecureRandom();
@@ -49,6 +53,7 @@ public class UserService {
         user.setRole(UserRole.USER);
         user.setStatus(StatusUser.PENDING_VERIFY);
         userRepository.save(user);
+        cartService.getOrCreateCart(user);
         String otp = generateOtp();
         String key = "otp:" + request.getEmail();
         redisTemplate.opsForValue().set(key, otp, 5, TimeUnit.MINUTES);
@@ -75,7 +80,8 @@ public class UserService {
             .map(UserMapper::toResponse)
             .collect(Collectors.toList());
     }
-    public UserResponse updateUsername(Long userId, UserRequest request) {
+    public UserResponse updateUsername(UpdateUserNameRequest request) {
+        Long userId = getCurrentUserId();
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         if(user.getStatus() == StatusUser.DELETED) {
             throw new AppException(ErrorCode.INVALID_STATE);
@@ -89,7 +95,8 @@ public class UserService {
         user.setUsername(request.getUsername());
         return UserMapper.toResponse(userRepository.save(user));
     }
-    public UserResponse deleteUser(Long userId) {
+    public UserResponse deleteUser() {
+        Long userId = getCurrentUserId();
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         user.setStatus(StatusUser.DELETED);
         return UserMapper.toResponse(userRepository.save(user));

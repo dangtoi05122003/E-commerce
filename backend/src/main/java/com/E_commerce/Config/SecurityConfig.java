@@ -2,6 +2,7 @@ package com.E_commerce.Config;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Value("${jwt.signerkey}")
     private String signerkey;
+    @Autowired
+    private CustomJwtDecoder customJwtDecoder;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -37,7 +40,7 @@ public class SecurityConfig {
             )
             .oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwt -> jwt
-                    .decoder(jwtDecoder())
+                    .decoder(customJwtDecoder)
                     .jwtAuthenticationConverter(jwtAuthenticationConverter())
                 )
             );

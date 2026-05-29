@@ -1,4 +1,4 @@
-package com.E_commerce.dto.Request;
+package com.E_commerce.dto.Request.user;
 
 import com.E_commerce.Enum.StatusUser;
 import com.E_commerce.Enum.UserRole;
@@ -17,7 +17,7 @@ public class UserRequest {
     @Size(min = 8, max = 80, message = "Mật khẩu phải từ 8 ký tự trở lên")
     private String password;
     @NotBlank(message = "Email không được để trống")
-    @Pattern(regexp = "^[a-zA-Z0-9+._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2-6}$", message = "Email không hợp lệ")
+    @Pattern(regexp = "^[a-zA-Z0-9+._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "Email không hợp lệ")
     private String email;
     private UserRole role;
     private StatusUser status;

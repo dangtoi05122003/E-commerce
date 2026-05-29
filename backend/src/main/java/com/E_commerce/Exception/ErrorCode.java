@@ -18,6 +18,7 @@ public enum ErrorCode {
     USERNAME_NOT_CHANGED(1010, "Tên đăng nhập mới phải khác tên hiện tại"),
     INVALID_STATE(1011, "Không thể thực hiện thao tác do trạng thái hiện tại tài khoản"),
     UNAUTHORIZED(1012, "Bạn không có quyền thực hiện hành động này"),
+    LOGOUT_ERROR(1013, "Yêu cầu đăng xuất không hợp lệ"),
     ADDRESS_NOT_FOUND(2001, "Không tìm thấy địa chỉ"),
     ADDRESS_ALREADY_DELETED(2002, "Địa chỉ này đã bị xoá trước đó"),
     CATEGORY_NOT_FOUND(3001,"Không tìm thấy danh mục"),
@@ -29,7 +30,10 @@ public enum ErrorCode {
     VARIANT_INACTIVE(4006, "Sản phẩm đã bị vô hiệu hóa"),
     INVENTORY_NOT_FOUND(4007, "Không tìm thấy tồn kho"),
     INSUFFICIENT_STOCK(4008, "Không đủ số lượng trong kho"),
-    INVENTORY_ALREADY_EXISTS(4009, "Kho hàng của sản phẩm này đã tồn tại");
+    INVENTORY_ALREADY_EXISTS(4009, "Kho hàng của sản phẩm này đã tồn tại"),
+    CART_NOT_FOUND(5000,"Không tìm thấy giỏ hàng"),
+    CART_ITEM_NOT_FOUND(5001,"Không tìm thấy sản phẩm trong giỏ hàng"),
+    INVALID_QUANTITY(5002,"Số lượng không hợp lệ");
     private int code;
     private String message;
 }

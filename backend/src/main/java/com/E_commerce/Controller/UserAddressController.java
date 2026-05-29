@@ -23,9 +23,9 @@ import jakarta.validation.Valid;
 public class UserAddressController {
     @Autowired
     private UserAddressService userAddressService;
-    @PostMapping("/{userId}")
-    public UserAddressResponse create(@PathVariable Long userId, @Valid @RequestBody UserAddressRequest request) {
-        return userAddressService.createUserAddress(userId, request);
+    @PostMapping
+    public UserAddressResponse create(@Valid @RequestBody UserAddressRequest request) {
+        return userAddressService.createUserAddress(request);
     }
     @PutMapping("/{addressId}")
     public UserAddressResponse update(@PathVariable Long addressId, @Valid @RequestBody UserAddressRequest request) {
@@ -35,9 +35,9 @@ public class UserAddressController {
     public UserAddressResponse delete(@PathVariable Long addressId) {
         return userAddressService.deleteUserAddress(addressId);
     }
-    @GetMapping("/user/{userId}")
-    public List<UserAddressResponse> getAllByUser(@PathVariable Long userId) {
-        return userAddressService.getAllAddressesByUserId(userId);
+    @GetMapping("/user")
+    public List<UserAddressResponse> getAllByUser() {
+        return userAddressService.getAllAddressesByUserId();
     }
     @GetMapping("/{addressId}")
     public UserAddressResponse getById(@PathVariable Long addressId) {

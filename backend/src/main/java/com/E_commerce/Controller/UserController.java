@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.E_commerce.Enum.StatusUser;
 import com.E_commerce.Enum.UserRole;
 import com.E_commerce.Service.UserService;
-import com.E_commerce.dto.Request.UserRequest;
+import com.E_commerce.dto.Request.user.UpdateUserNameRequest;
+import com.E_commerce.dto.Request.user.UserRequest;
 import com.E_commerce.dto.Response.UserResponse;
 
 import jakarta.validation.Valid;
@@ -45,12 +46,12 @@ public class UserController {
     public List<UserResponse> getAllStatusUser(@RequestParam StatusUser status) {
         return userService.getStatusUser(status);
     }
-    @PutMapping("/update/{userId}")
-    public UserResponse updateUsername(@PathVariable Long userId, @Valid @RequestBody UserRequest request) {
-        return userService.updateUsername(userId, request);
+    @PutMapping("/update")
+    public UserResponse updateUsername(@Valid @RequestBody UpdateUserNameRequest request) {
+        return userService.updateUsername(request);
     }
-    @PutMapping("/delete/{userId}")
-    public UserResponse deleteUser(@PathVariable Long userId) {
-        return userService.deleteUser(userId);
+    @PutMapping("/delete")
+    public UserResponse deleteUser() {
+        return userService.deleteUser();
     }
 }
