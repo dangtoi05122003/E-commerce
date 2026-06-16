@@ -9,7 +9,7 @@ public class ProductMapper {
             .name(product.getName())
             .slug(product.getSlug())
             .description(product.getDescription())
-            .category(product.getCategory())
+            .category(CategoryMapper.toResponse(product.getCategory()))
             .status(product.getStatus())
             .build();
     }

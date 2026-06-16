@@ -3,6 +3,7 @@ package com.E_commerce.Service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +45,7 @@ public class ProductService {
         product.setCategory(category);
         return ProductMapper.toResponse(productRepository.save(product));
     }
+    @Cacheable(value = "product", key = "#productId")
     public ProductResponse getProductById(Long productId) {
         ProductEntity product = productRepository.findById(productId).orElseThrow(()-> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
         return ProductMapper.toResponse(product);
@@ -56,6 +58,7 @@ public class ProductService {
     public List<ProductResponse> getAllProduct() {
         return productRepository.findAll().stream().map(ProductMapper::toResponse).toList();
     }
+    @Cacheable("visible_products")
     public List<ProductResponse> getVisibleProducts() {
         return productRepository.findByStatus(ProductStatus.ACTIVE).stream().map(ProductMapper::toResponse).toList();
     }

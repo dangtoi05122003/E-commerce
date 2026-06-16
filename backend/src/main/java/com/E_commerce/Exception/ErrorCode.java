@@ -33,7 +33,13 @@ public enum ErrorCode {
     INVENTORY_ALREADY_EXISTS(4009, "Kho hàng của sản phẩm này đã tồn tại"),
     CART_NOT_FOUND(5000,"Không tìm thấy giỏ hàng"),
     CART_ITEM_NOT_FOUND(5001,"Không tìm thấy sản phẩm trong giỏ hàng"),
-    INVALID_QUANTITY(5002,"Số lượng không hợp lệ");
+    INVALID_QUANTITY(5002,"Số lượng không hợp lệ"),
+    ORDER_NOT_FOUND(6001, "Không tìm thấy đơn hàng"),
+    PAYMENT_ALREADY_EXISTS(7001, "Đơn hàng đã có giao dịch thanh toán"),
+    PAYMENT_NOT_FOUND(7002, "Không tìm thấy giao dịch thanh toán"),
+    ERROR_WHILE_HASHING(7003, "Không thể tạo hash thanh toán"),
+    PAYMENT_FAILED(7004, "Thanh toán thất bại"),
+    PAYMENT_SIGNATURE_INVALID(7005, "Chữ ký không hợp lệ");
     private int code;
     private String message;
 }
